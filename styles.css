@@ -1,0 +1,38 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background:lavender;
+    height: 100vh;
+}
+
+.add {
+    display: flex;
+    padding: 10px
+}
+
+.book-cards {
+    display: grid;
+    padding: 50px 200px;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 30px;
+    justify-items: center;
+}
+
+.card {
+    min-height: 300px;
+    min-width: 300px;
+    border: 1px solid black;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px 50px;
+    justify-content: space-between;
+    border-bottom: 2px solid black;
+}
+
+.title {
+    font-size: 40px;
+}
