@@ -2,7 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
-    background:rgb(207, 207, 255);
+    background-color: white;
     height: 100vh;
 }
 
@@ -19,6 +19,7 @@ body {
 label {
     padding: 10px 0;
     font-size: 20px;
+    cursor: pointer;
 }
 
 button {
@@ -49,6 +50,8 @@ button {
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
     min-height: 300px;
     min-width: 300px;
     border: 1px solid black;
@@ -66,42 +69,22 @@ button {
     font-size: 40px;
 }
 
-.remove {
-    margin-left: 390px;
+.close {
+    display: flex;
     margin-top: 10px;
+   
+}
+
+.remove {
+    display: flex;
     cursor: pointer;
     border: none;
     outline: none;
     background: none;
     font-size: 18px;
     font-weight: bold;
-    
 }
 
-.form, ::before, ::after {
-    box-sizing: border-box;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: 200ms ease-in-out;
-    border: 1px solid black;
-    border-radius: 10px;
-    z-index: 10;
-    background-color: white;
-    width: 450px;
-    max-width: 50%;
-    min-height: 410px;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    background-color: rgb(218, 244, 253);
-}
 
 .yes-no {
     display: flex;
@@ -109,9 +92,6 @@ button {
     gap: 20px;
 }
 
-.form.active {
-    transform: translate(-50%, -50%) scale(1);
-}
 
 .form-title,
 .form-author,
@@ -134,6 +114,37 @@ button {
     justify-content: space-around;
 }
 
+
+
+.form, ::before, ::after {
+    box-sizing: border-box;
+}
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 450px;
+    max-width: 50%;
+    min-height: 410px;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background-color: white;
+}
+
+.form.active {
+    transform: translate(-50%, -50%) scale(1);
+}
 
 #overlay {
     position: fixed;
