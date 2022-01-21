@@ -6,6 +6,19 @@ body {
     height: 100vh;
 }
 
+.input {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 200px;
+    text-align: justify;
+}
+
+label {
+    padding: 10px 0;
+}
+
 .add {
     display: flex;
     padding: 10px
@@ -35,4 +48,49 @@ body {
 
 .title {
     font-size: 40px;
+}
+
+.form, ::before, ::after {
+    box-sizing: border-box;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 50%;
+    min-height: 410px;
+    justify-content: center;
+    align-items: center;
+}
+
+.yes-no {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.form-title,
+.form-author,
+.form-pages,
+.form-read {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 30px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.form-read {
+    justify-content: flex-start;
+    font-size: 16px;
 }
