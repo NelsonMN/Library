@@ -20,6 +20,7 @@
                 <div class="card-author">By: Harper Lee</div>
                 <div class="card-pages">281 pages</div>
                 <div class="card-read">Read</div>
+                <button>Read</button>
             </div>
         </div>
         <div class="form" id="form">
@@ -28,24 +29,24 @@
             </div>
             <form action="">
                 <div class="form-title">
-                    <input class="input" type="text" value="Title"> 
+                    <input class="input" id="title" type="text" value="Title"> 
                 </div>
                 <div class="form-author">
-                    <input class="input" type="text" value="Author"> 
+                    <input class="input" id="author" type="text" value="Author"> 
                 </div>
                 <div class="form-pages">
-                    <input class="input"type="text" value="Page-Count"> 
+                    <input class="input" id="pages" type="text" value="Page-Count"> 
                 </div>
                 <div class="form-read">
                     <div class="question">
                         <label for="read">Have you read it?</label>
                     </div>
                     <div class="checkbox">
-                        <input type="checkbox">
+                        <input type="checkbox" id="read">
                     </div>
                 </div>
                 <div class="submit">
-                     <button class="add-book">Add!</button>
+                     <button class="add-book" type="submit">Add!</button>
                 </div>
             </form>
         </div>

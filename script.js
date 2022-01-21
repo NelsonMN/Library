@@ -13,9 +13,46 @@ function Book(title, author, pageCount, read) {
     this.read = read
 }
 
-const addBook = function(book) {
-    myLibrary.push(book)
+function newBook() {
+    const bookTitle = document.getElementById("title").value;
+    const bookAuthor = document.getElementById("author").value;
+    const bookPageCount = document.getElementById("pages").value;
+    const read = document.getElementById("read").checked;
+    return new Book(bookTitle, bookAuthor, bookPageCount, read)
 }
+
+function addBookToLibrary(book) {
+    const bookCards = document.querySelector(".book-cards")
+    const card = document.createElement('div');
+    const cardTitle = document.createElement('div');
+    const cardAuthor = document.createElement('div');
+    const cardPages = document.createElement('div');
+    const cardRead = document.createElement('div');
+    const cardButton = document.createElement('button');
+ 
+    card.classList.add('card')
+    cardTitle.classList.add('card-title')
+    cardAuthor.classList.add('card-author')
+    cardPages.classList.add('card-pages')
+    cardRead.classList.add('card-read')
+    cardButton.textContent = "Read"
+
+    cardTitle.textContent = `"${book.title}"`
+    cardAuthor.textContent = book.author;
+    cardPages.textContent = `${book.pages} pages`
+    const read = document.getElementById("read").checked
+    if (read) {
+        cardRead.textContent = "Read"
+    } else {
+        cardRead.textContent = "Not Read"
+    }
+
+    card.append(cardTitle, cardAuthor, cardPages, cardPages, cardRead, cardButton)
+    bookCards.appendChild(card)
+}
+
+
+
 
 const displayBooks = function() {
     for (i = 0; i < myLibrary.length; i++) {

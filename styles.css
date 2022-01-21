@@ -24,7 +24,7 @@ label {
 
 button {
     display: flex;
-    padding: 10px
+    padding: 10px;
 }
 
 .add-book {
@@ -38,7 +38,6 @@ button {
     margin: 15px;
     align-items: center;
     justify-content: center;
-
 }
 
 .book-cards {
@@ -46,15 +45,17 @@ button {
     padding: 50px 200px;
     grid-template-columns: repeat(4,1fr);
     grid-gap: 30px;
-    justify-items: center;
+
 }
 
 .card {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     min-height: 300px;
     min-width: 300px;
     border: 1px solid black;
+    align-items: center;
 }
 
 .header {
