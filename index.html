@@ -11,13 +11,14 @@
 <body>
     <div class="header">
         <div class="title">Library</div>
-        <button class="add">Add Book</button>
+        <button data-modal-target= "#form" class="add">Add Book</button>
     </div>
     <div class="body">
         <div class="book-cards">
             <div class="card"></div>
         </div>
-        <div class="form" id="form">
+        <div class="form active" id="form">
+            <button class="remove">&times;</button>
             <form action="">
                 <div class="form-title">
                     <input class="input" type="text" value="Title"> 
@@ -41,7 +42,7 @@
                 </div>
             </form>
         </div>
-        <div id="overlay"></div>
+    <div id="overlay"></div>
     </div>
     <div class="footer"></div>
     </body>
