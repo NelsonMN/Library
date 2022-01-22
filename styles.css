@@ -7,16 +7,6 @@ body {
     width: 100vw;
 }
 
-.input {
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 200px;
-    text-align: justify;
-    font-size: 20px;
-}
-
 label {
     padding: 10px 0;
     font-size: 20px;
@@ -26,6 +16,17 @@ label {
 button {
     display: flex;
     padding: 10px;
+}
+
+
+.input {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 200px;
+    text-align: justify;
+    font-size: 20px;
 }
 
 .add-book {
@@ -44,9 +45,8 @@ button {
 .book-cards {
     display: grid;
     padding: 50px 200px;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(3,1fr);
     grid-gap: 30px;
-
 }
 
 .card {
@@ -88,13 +88,6 @@ button {
 }
 
 
-.yes-no {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-}
-
-
 .form-title,
 .form-author,
 .form-pages,
@@ -118,7 +111,7 @@ button {
 
 
 
-.form, ::before, ::after {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 

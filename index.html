@@ -15,20 +15,12 @@
     </div>
     <div class="body">
         <div class="book-cards">
-            <div class="card">
-                <div class="card-title">To Kill A Mockingbird</div>
-                <div class="card-author">By: Harper Lee</div>
-                <div class="card-pages">281 pages</div>
-                <div class="card-read">Read</div>
-                <button>Read</button>
-                <button>Delete</button>
-            </div>
         </div>
         <div class="form" id="form">
             <div class="close">
                 <button data-close-button class="remove">&times;</button>
             </div>
-            <form action="">
+            <form id="form-card">
                 <div class="form-title">
                     <input class="input" id="title" type="text" value="Title"> 
                 </div>
@@ -36,7 +28,7 @@
                     <input class="input" id="author" type="text" value="Author"> 
                 </div>
                 <div class="form-pages">
-                    <input class="input" id="pages" type="text" value="Page-Count"> 
+                    <input class="input" id="pages" type="text" value="Number of Pages"> 
                 </div>
                 <div class="form-read">
                     <div class="question">

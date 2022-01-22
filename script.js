@@ -6,12 +6,38 @@ let myLibrary = [
     {title: "Atomic Habits", author: "James Clear", pageCount: "320", read: "yes"}
 ];
 
+
+// Data Structures
+
 function Book(title, author, pageCount, read) {
     this.title = title
     this.author = author
     this.pageCount = pageCount
     this.read = read
 }
+
+const addBook = function(book){
+    myLibrary.push(book)
+};
+
+const removeBook = function(book) {
+    for (i = 0; i < myLibrary.length; i++) {
+        if (book.title === myLibrary[i].title){
+            myLibrary.splice(myLibrary[i],1)
+        }}   
+};
+
+const toggleRead = function(book) {
+    for (i = 0; i < myLibrary.length; i++) {
+        if (book.title === myLibrary[i].title && book.read === myLibrary[i].read && book.read === "yes"){
+            myLibrary[i].read = "no";
+        } else if (book.title === myLibrary[i].title && book.read === myLibrary[i].read && book.read === "no") {
+            myLibrary[i].read = "yes";
+        }}
+};
+
+
+// UI Functions:
 
 function getBookInfo() {
     const bookTitle = document.getElementById("title").value;
@@ -30,6 +56,7 @@ function addBookToLibrary(book) {
     const cardRead = document.createElement('div');
     const cardButton = document.createElement('button');
     const cardDelete = document.createElement('button');
+    const read = document.getElementById("read").checked;
  
     card.classList.add('card');
     cardTitle.classList.add('card-title');
@@ -40,41 +67,28 @@ function addBookToLibrary(book) {
     cardDelete.classList.add('card-delete')
 
     cardTitle.textContent = `"${book.title}"`;
-    cardAuthor.textContent = book.author;
-    cardPages.textContent = `${book.pages} pages`;
+    cardAuthor.textContent = `By: ${book.author}`;
+    cardPages.textContent = `${book.pageCount} pages`;
     cardButton.textContent = "Read";
-    cardDelete.textContent = "Delete"
-    const read = document.getElementById("read").checked;
+    cardDelete.textContent = "Delete";
     if (read) {
         cardRead.textContent = "Read";
     } else {
         cardRead.textContent = "Not Read";
     };
 
-    card.append(cardTitle, cardAuthor, cardPages, cardPages, cardRead, cardButton)
+    addBook(book)
+    card.append(cardTitle, cardAuthor, cardPages, cardPages, cardRead, cardButton, cardDelete)
     bookCards.appendChild(card)
 }
 
+
+// Opening and Closing Modal form and submit button
+
+const addBookButtons = document.querySelectorAll("[data-modal-target]");
+const closeBookButtons = document.querySelectorAll("[data-close-button]");
+const overlay = document.getElementById("overlay");
 const submitButton = document.querySelector('.add-book');
-submitButton.addEventListener('click', (e) => {
-    e.preventDefault()
-    const newBook = getBookInfo();
-    myLibrary.push(newBook);
-    addBookToLibrary(newBook);
-})
-
-
-const displayBooks = function() {
-    for (i = 0; i < myLibrary.length; i++) {
-        console.log(myLibrary[i])
-    }
-}
-
-// Opening and Closing Modal form
-
-const addBookButtons = document.querySelectorAll("[data-modal-target]")
-const closeBookButtons = document.querySelectorAll("[data-close-button]")
-const overlay = document.getElementById("overlay")
 
 addBookButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -89,6 +103,16 @@ closeBookButtons.forEach(button => {
         closeForm(form)
     })
 })
+
+submitButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    const newBook = getBookInfo();
+    myLibrary.push(newBook);
+    addBookToLibrary(newBook);
+    formCard = document.getElementById("form-card")
+    formCard.reset()
+})
+
 
 function openForm(form) {
     if (form == null) return
