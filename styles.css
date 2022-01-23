@@ -44,7 +44,7 @@ button {
 
 .book-cards {
     display: grid;
-    padding: 50px 200px;
+    padding: 50px 100px;
     grid-template-columns: repeat(3,1fr);
     grid-gap: 30px;
 }

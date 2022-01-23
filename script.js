@@ -1,11 +1,12 @@
-let myLibrary = [
-    {title: "The Great Gatsby", author: "F. Scott Fitzgerald", pageCount: "208", read: "no"},
-    {title: "Nineteen Eighty-Four", author: "George Orwell", pageCount: "328", read: "no"},
-    {title: "To Kill A Mockingbird", author: "Harper Lee", pageCount: "281", read: "yes"},
-    {title: "The 5 AM Club", author: "Robin Sharma", pageCount: "336", read: "yes"},
-    {title: "Atomic Habits", author: "James Clear", pageCount: "320", read: "yes"}
-];
+// let myLibrary = [
+//     {title: "The Great Gatsby", author: "F. Scott Fitzgerald", pageCount: "208", read: "no"},
+//     {title: "Nineteen Eighty-Four", author: "George Orwell", pageCount: "328", read: "no"},
+//     {title: "To Kill A Mockingbird", author: "Harper Lee", pageCount: "281", read: "yes"},
+//     {title: "The 5 AM Club", author: "Robin Sharma", pageCount: "336", read: "yes"},
+//     {title: "Atomic Habits", author: "James Clear", pageCount: "320", read: "yes"}
+// ];
 
+let myLibrary = [];
 
 // Data Structures
 
@@ -29,10 +30,19 @@ const removeBook = function(book) {
 
 const toggleRead = function(book) {
     for (i = 0; i < myLibrary.length; i++) {
-        if (book.title === myLibrary[i].title && book.read === myLibrary[i].read && book.read === "yes"){
-            myLibrary[i].read = "no";
-        } else if (book.title === myLibrary[i].title && book.read === myLibrary[i].read && book.read === "no") {
-            myLibrary[i].read = "yes";
+        if (book.title === myLibrary[i].title && book.read === "Read"){
+            book.read = "Not Read";
+            myLibrary[i].read = "Not Read";
+        } else if (book.title === myLibrary[i].title && book.read === "Not Read") {
+            book.read= "Read";
+            myLibrary[i].read = "Read";
+        }}
+};
+
+const findBook = function(title) {
+    for (i = 0; i < myLibrary.length; i++) {
+        if (title === myLibrary[i].title) {
+            return myLibrary[i]
         }}
 };
 
@@ -44,7 +54,13 @@ function getBookInfo() {
     const bookAuthor = document.getElementById("author").value;
     const bookPageCount = document.getElementById("pages").value;
     const read = document.getElementById("read").checked;
-    return new Book(bookTitle, bookAuthor, bookPageCount, read)
+    let readStatus;
+    if (read) {
+        readStatus = "Read"
+    } else {
+        readStatus = "Not Read"
+    }
+    return new Book(bookTitle, bookAuthor, bookPageCount, readStatus)
 };
 
 function addBookToLibrary(book) {
@@ -53,42 +69,63 @@ function addBookToLibrary(book) {
     const cardTitle = document.createElement('div');
     const cardAuthor = document.createElement('div');
     const cardPages = document.createElement('div');
-    const cardRead = document.createElement('div');
-    const cardButton = document.createElement('button');
-    const cardDelete = document.createElement('button');
+    const readStatus = document.createElement('div');
+    const readButton = document.createElement('button');
+    const deleteButton = document.createElement('button');
     const read = document.getElementById("read").checked;
- 
+
     card.classList.add('card');
     cardTitle.classList.add('card-title');
     cardAuthor.classList.add('card-author');
     cardPages.classList.add('card-pages');
-    cardRead.classList.add('card-read');
-    cardButton.classList.add('card-button');
-    cardDelete.classList.add('card-delete')
+    readStatus.classList.add('card-read');
+    readButton.classList.add('card-button');
+    deleteButton.classList.add('card-delete')
+
+    readButton.addEventListener("click", toggleReadStatus)
+    deleteButton.addEventListener("click", deleteCard)
 
     cardTitle.textContent = `"${book.title}"`;
     cardAuthor.textContent = `By: ${book.author}`;
     cardPages.textContent = `${book.pageCount} pages`;
-    cardButton.textContent = "Read";
-    cardDelete.textContent = "Delete";
+    readButton.textContent = "Read";
+    deleteButton.textContent = "Delete";
     if (read) {
-        cardRead.textContent = "Read";
+        readStatus.textContent = "Read";
     } else {
-        cardRead.textContent = "Not Read";
+        readStatus.textContent = "Not Read";
     };
 
     addBook(book)
-    card.append(cardTitle, cardAuthor, cardPages, cardPages, cardRead, cardButton, cardDelete)
+    card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
     bookCards.appendChild(card)
 }
 
+function toggleReadStatus(e) {
+    const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
+    toggleRead(findBook(title))
+    const readStatus = e.target.previousSibling;
+    if (readStatus.textContent == "Not Read") {
+        readStatus.textContent = "Read";
+    } else if (readStatus.textContent == "Read") {
+        readStatus.textContent = "Not Read";
+    }
+}
+
+function deleteCard(e) {
+    const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
+    removeBook(findBook(title));
+    const card = e.target.parentNode;
+    card.remove();
+}
 
 // Opening and Closing Modal form and submit button
 
 const addBookButtons = document.querySelectorAll("[data-modal-target]");
 const closeBookButtons = document.querySelectorAll("[data-close-button]");
-const overlay = document.getElementById("overlay");
 const submitButton = document.querySelector('.add-book');
+const overlay = document.getElementById("overlay");
+
 
 addBookButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -107,7 +144,6 @@ closeBookButtons.forEach(button => {
 submitButton.addEventListener('click', (e) => {
     e.preventDefault()
     const newBook = getBookInfo();
-    myLibrary.push(newBook);
     addBookToLibrary(newBook);
     formCard = document.getElementById("form-card")
     formCard.reset()
