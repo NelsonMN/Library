@@ -13,10 +13,17 @@ const addBook = function(book){
     myLibrary.push(book)
 };
 
+const findBook = function(title) {
+    for (i = 0; i < myLibrary.length; i++) {
+        if (title === myLibrary[i].title) {
+            return myLibrary[i]
+        }}
+};
+
 const removeBook = function(book) {
     for (i = 0; i < myLibrary.length; i++) {
-        if (book.title === myLibrary[i].title){
-            myLibrary.splice(i,1)
+        if (book.title === myLibrary[i].title) {
+            myLibrary.splice(i, 1)
         }}   
 };
 
@@ -28,13 +35,6 @@ const toggleRead = function(book) {
         } else if (book.title === myLibrary[i].title && book.read === "Not Read") {
             book.read= "Read";
             myLibrary[i].read = "Read";
-        }}
-};
-
-const findBook = function(title) {
-    for (i = 0; i < myLibrary.length; i++) {
-        if (title === myLibrary[i].title) {
-            return myLibrary[i]
         }}
 };
 
@@ -138,7 +138,7 @@ submitButton.addEventListener('click', (e) => {
     e.preventDefault()
     const newBook = getBookInfo();
     addBookToLibrary(newBook);
-    formCard = document.getElementById("form-card")
+    const formCard = document.getElementById("form-card");
     formCard.reset()
 })
 
