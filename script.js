@@ -1,11 +1,3 @@
-// let myLibrary = [
-//     {title: "The Great Gatsby", author: "F. Scott Fitzgerald", pageCount: "208", read: "no"},
-//     {title: "Nineteen Eighty-Four", author: "George Orwell", pageCount: "328", read: "no"},
-//     {title: "To Kill A Mockingbird", author: "Harper Lee", pageCount: "281", read: "yes"},
-//     {title: "The 5 AM Club", author: "Robin Sharma", pageCount: "336", read: "yes"},
-//     {title: "Atomic Habits", author: "James Clear", pageCount: "320", read: "yes"}
-// ];
-
 let myLibrary = [];
 
 // Data Structures
@@ -24,7 +16,7 @@ const addBook = function(book){
 const removeBook = function(book) {
     for (i = 0; i < myLibrary.length; i++) {
         if (book.title === myLibrary[i].title){
-            myLibrary.splice(myLibrary[i],1)
+            myLibrary.splice(i,1)
         }}   
 };
 
@@ -118,6 +110,7 @@ function deleteCard(e) {
     const card = e.target.parentNode;
     card.remove();
 }
+
 
 // Opening and Closing Modal form and submit button
 
