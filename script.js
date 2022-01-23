@@ -10,20 +10,20 @@ function Book(title, author, pageCount, read) {
 }
 
 const addBook = function(book){
-    myLibrary.push(book)
+    myLibrary.push(book);
 };
 
 const findBook = function(title) {
     for (i = 0; i < myLibrary.length; i++) {
         if (title === myLibrary[i].title) {
-            return myLibrary[i]
+            return myLibrary[i];
         }}
 };
 
 const removeBook = function(book) {
     for (i = 0; i < myLibrary.length; i++) {
         if (book.title === myLibrary[i].title) {
-            myLibrary.splice(i, 1)
+            myLibrary.splice(i, 1);
         }}   
 };
 
@@ -48,15 +48,15 @@ function getBookInfo() {
     const read = document.getElementById("read").checked;
     let readStatus;
     if (read) {
-        readStatus = "Read"
+        readStatus = "Read";
     } else {
-        readStatus = "Not Read"
+        readStatus = "Not Read";
     }
     return new Book(bookTitle, bookAuthor, bookPageCount, readStatus)
 };
 
 function addBookToLibrary(book) {
-    const bookCards = document.querySelector(".book-cards")
+    const bookCards = document.querySelector(".book-cards");
     const card = document.createElement('div');
     const cardTitle = document.createElement('div');
     const cardAuthor = document.createElement('div');
@@ -72,10 +72,10 @@ function addBookToLibrary(book) {
     cardPages.classList.add('card-pages');
     readStatus.classList.add('card-read');
     readButton.classList.add('card-button');
-    deleteButton.classList.add('card-delete')
+    deleteButton.classList.add('card-delete');
 
-    readButton.addEventListener("click", toggleReadStatus)
-    deleteButton.addEventListener("click", deleteCard)
+    readButton.addEventListener("click", toggleReadStatus);
+    deleteButton.addEventListener("click", deleteCard);
 
     cardTitle.textContent = `"${book.title}"`;
     cardAuthor.textContent = `By: ${book.author}`;
@@ -95,7 +95,7 @@ function addBookToLibrary(book) {
 
 function toggleReadStatus(e) {
     const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    toggleRead(findBook(title))
+    toggleRead(findBook(title));
     const readStatus = e.target.previousSibling;
     if (readStatus.textContent == "Not Read") {
         readStatus.textContent = "Read";
@@ -122,15 +122,15 @@ const overlay = document.getElementById("overlay");
 
 addBookButtons.forEach(button => {
     button.addEventListener("click", () => {
-        const form = document.querySelector(button.dataset.modalTarget)
-        openForm(form)
+        const form = document.querySelector(button.dataset.modalTarget);
+        openForm(form);
     })
 }) 
 
 closeBookButtons.forEach(button => {
     button.addEventListener("click", () => {
         const form = button.closest(".form")
-        closeForm(form)
+        closeForm(form);
     })
 })
 
@@ -139,18 +139,18 @@ submitButton.addEventListener('click', (e) => {
     const newBook = getBookInfo();
     addBookToLibrary(newBook);
     const formCard = document.getElementById("form-card");
-    formCard.reset()
+    formCard.reset();
 })
 
 
 function openForm(form) {
     if (form == null) return
-    form.classList.add("active")
-    overlay.classList.add("active")
+    form.classList.add("active");
+    overlay.classList.add("active");
 }
 
 function closeForm(form) {
     if (form == null) return
-    form.classList.remove("active")
-    overlay.classList.remove("active")
+    form.classList.remove("active");
+    overlay.classList.remove("active");
 }
