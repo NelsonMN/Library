@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -53,7 +57,7 @@ button {
     flex-direction: column;
     justify-content: space-evenly;
     min-height: 300px;
-    min-width: 300px;
+    max-width: 300px;
     border: 1px solid black;
     align-items: center;
 }
