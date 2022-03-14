@@ -2,41 +2,46 @@ let myLibrary = [];
 
 // Data Structures
 
-function Book(title, author, pageCount, read) {
-    this.title = title
-    this.author = author
-    this.pageCount = pageCount
-    this.read = read
+class Book {
+    constructor(title, author, pageCount, read) {
+        this.title = title
+        this.author = author
+        this.pageCount = pageCount
+        this.read = read
+    }
+
+    addBook(book) {
+        myLibrary.push(book)
+    }
+
+    findBook(title) {
+        for (i = 0; i < myLibrary.length; i++) {
+            if (title === myLibrary[i].title) {
+                return myLibrary[i];
+            }
+        }
+    }
+
+    removeBook(book) {
+        for (i = 0; i < myLibrary.length; i++) {
+            if (book.title === myLibrary[i].title) {
+                myLibrary.splice(i, 1);
+            }
+        }       
+    }
+
+    toggleRead(book) {
+        for (i = 0; i < myLibrary.length; i++) {
+            if (book.title === myLibrary[i].title && book.read === "Read"){
+                book.read = "Not Read";
+                myLibrary[i].read = "Not Read";
+            } else if (book.title === myLibrary[i].title && book.read === "Not Read") {
+                book.read= "Read";
+                myLibrary[i].read = "Read";
+            }
+        }
+    }
 }
-
-const addBook = function(book){
-    myLibrary.push(book);
-};
-
-const findBook = function(title) {
-    for (i = 0; i < myLibrary.length; i++) {
-        if (title === myLibrary[i].title) {
-            return myLibrary[i];
-        }}
-};
-
-const removeBook = function(book) {
-    for (i = 0; i < myLibrary.length; i++) {
-        if (book.title === myLibrary[i].title) {
-            myLibrary.splice(i, 1);
-        }}   
-};
-
-const toggleRead = function(book) {
-    for (i = 0; i < myLibrary.length; i++) {
-        if (book.title === myLibrary[i].title && book.read === "Read"){
-            book.read = "Not Read";
-            myLibrary[i].read = "Not Read";
-        } else if (book.title === myLibrary[i].title && book.read === "Not Read") {
-            book.read= "Read";
-            myLibrary[i].read = "Read";
-        }}
-};
 
 
 // UI Functions:
