@@ -17,15 +17,15 @@ class Library {
     }
 
     removeBook(book) {
-        for (i = 0; i < myLibrary.length; i++) {
-            if (book.title === books[i].title) {
-                books.splice(i, 1);
+        for (let i = 0; i < this.books.length; i++) {
+            if (book.title === this.books[i].title) {
+                this.books.splice(i, 1);
             }
         }
     }
 
     findBook(title) {
-        for (i = 0; i < this.books.length; i++) {
+        for (let i = 0; i < this.books.length; i++) {
             if (title === this.books[i].title) {
                 return this.books[i]
             }
@@ -33,7 +33,7 @@ class Library {
     }
 
     toggleRead(book) {
-        for (i = 0; i < this.books.length; i++) {
+        for (let i = 0; i < this.books.length; i++) {
             if (book.title === this.books[i].title && book.read === "Read"){
                 book.read = "Not Read";
                 book.read = "Not Read";
@@ -104,7 +104,7 @@ function addBookToLibrary(book) {
 
 function toggleReadStatus(e) {
     const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    library.toggleRead(findBook(title));
+    library.toggleRead(library.findBook(title));
     const readStatus = e.target.previousSibling;
     if (readStatus.textContent == "Not Read") {
         readStatus.textContent = "Read";
@@ -115,7 +115,7 @@ function toggleReadStatus(e) {
 
 function deleteCard(e) {
     const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    library.removeBook(findBook(title));
+    library.removeBook(library.findBook(title));
     const card = e.target.parentNode;
     card.remove();
 }
