@@ -1,7 +1,3 @@
-let myLibrary = [];
-
-// Data Structures
-
 class Book {
     constructor(title, author, pageCount, read) {
         this.title = title
@@ -9,39 +5,47 @@ class Book {
         this.pageCount = pageCount
         this.read = read
     }
+}
 
-    addBook(book) {
-        myLibrary.push(book)
+class Library {
+    constructor () {
+        this.books = []
     }
 
-    findBook(title) {
-        for (i = 0; i < myLibrary.length; i++) {
-            if (title === myLibrary[i].title) {
-                return myLibrary[i];
-            }
-        }
+    addBook(book) {
+        this.books.push(book)
     }
 
     removeBook(book) {
         for (i = 0; i < myLibrary.length; i++) {
-            if (book.title === myLibrary[i].title) {
-                myLibrary.splice(i, 1);
+            if (book.title === books[i].title) {
+                books.splice(i, 1);
             }
-        }       
+        }
+    }
+
+    findBook(title) {
+        for (i = 0; i < this.books.length; i++) {
+            if (title === this.books[i].title) {
+                return this.books[i]
+            }
+        }
     }
 
     toggleRead(book) {
-        for (i = 0; i < myLibrary.length; i++) {
-            if (book.title === myLibrary[i].title && book.read === "Read"){
+        for (i = 0; i < this.books.length; i++) {
+            if (book.title === this.books[i].title && book.read === "Read"){
                 book.read = "Not Read";
-                myLibrary[i].read = "Not Read";
-            } else if (book.title === myLibrary[i].title && book.read === "Not Read") {
-                book.read= "Read";
-                myLibrary[i].read = "Read";
+                book.read = "Not Read";
+            } else if (book.title === this.books[i].title && book.read === "Not Read") {
+                book.read = "Read";
+                this.books[i].read = "Read";
             }
         }
     }
 }
+
+const library = new Library()
 
 
 // UI Functions:
@@ -93,14 +97,14 @@ function addBookToLibrary(book) {
         readStatus.textContent = "Not Read";
     };
 
-    addBook(book)
+    library.addBook(book)
     card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
     bookCards.appendChild(card)
 }
 
 function toggleReadStatus(e) {
     const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    toggleRead(findBook(title));
+    library.toggleRead(findBook(title));
     const readStatus = e.target.previousSibling;
     if (readStatus.textContent == "Not Read") {
         readStatus.textContent = "Read";
@@ -111,7 +115,7 @@ function toggleReadStatus(e) {
 
 function deleteCard(e) {
     const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    removeBook(findBook(title));
+    library.removeBook(findBook(title));
     const card = e.target.parentNode;
     card.remove();
 }
