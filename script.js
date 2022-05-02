@@ -140,17 +140,78 @@ closeBookButtons.forEach(button => {
     button.addEventListener("click", () => {
         const form = button.closest(".form")
         closeForm(form);
+        titleError.textContent = '';
+        authorError.textContent = '';
+        pagesError.textContent = '';
     })
 })
 
-submitButton.addEventListener('click', (e) => {
-    e.preventDefault()
-    const newBook = getBookInfo();
-    addBookToLibrary(newBook);
-    const formCard = document.getElementById("form-card");
-    formCard.reset();
-})
+const title = document.getElementById('title')
+const titleError = document.querySelector('#title + span.error')
 
+const author = document.getElementById('author')
+const authorError = document.querySelector('#author + span.error')
+
+const pages = document.getElementById('pages')
+const pagesError = document.querySelector('#pages + span.error')
+
+title.addEventListener('input', () => {
+    if (title.validity.valid) {
+        titleError.textContent = '';
+        titleError.className = 'error';
+    } else {
+        showError();
+    }
+});
+
+author.addEventListener('input', () => {
+    if (author.validity.valid) {
+        authorError.textContent = '';
+        authorError.className = 'error';
+    } else {
+        showError();
+    }
+});
+
+
+pages.addEventListener('input', function (event) {
+    if (pages.validity.valid) {
+        pagesError.textContent = '';
+        pagesError.className = 'error';
+    } else {
+        showError();
+    }
+});
+   
+submitButton.addEventListener('click', (e) => {
+    if (!title.validity.valid || !author.validity.valid || !pages.validity.valid) {
+        showError();
+        e.preventDefault()
+        e.stopImmediatePropagation()
+    } else {
+        e.preventDefault()
+        const newBook = getBookInfo();
+        addBookToLibrary(newBook);
+        const formCard = document.getElementById("form-card");
+        const form = document.querySelector(".form");
+        formCard.reset();
+        console.log(form)
+        closeForm(form)
+    }
+});
+
+function showError() {
+    if (title.validity.valueMissing) {
+        titleError.textContent = 'You need to enter a title!';
+        titleError.className = 'error active';
+    } if (author.validity.valueMissing) {
+        authorError.textContent = 'You need to enter an author!';
+        authorError.className = 'error active';
+    } if (pages.validity.valueMissing) {
+        pagesError.textContent = `You need to enter the page count!`;
+        pagesError.className = 'error active';
+    }
+}
 
 function openForm(form) {
     if (form == null) return
