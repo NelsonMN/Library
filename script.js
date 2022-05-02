@@ -148,40 +148,22 @@ closeBookButtons.forEach(button => {
 
 const title = document.getElementById('title')
 const titleError = document.querySelector('#title + span.error')
-
 const author = document.getElementById('author')
 const authorError = document.querySelector('#author + span.error')
-
 const pages = document.getElementById('pages')
 const pagesError = document.querySelector('#pages + span.error')
+const errorInputs = document.querySelectorAll('[error-input]')
 
-title.addEventListener('input', () => {
-    if (title.validity.valid) {
-        titleError.textContent = '';
-        titleError.className = 'error';
-    } else {
-        showError();
-    }
-});
-
-author.addEventListener('input', () => {
-    if (author.validity.valid) {
-        authorError.textContent = '';
-        authorError.className = 'error';
-    } else {
-        showError();
-    }
-});
-
-
-pages.addEventListener('input', function (event) {
-    if (pages.validity.valid) {
-        pagesError.textContent = '';
-        pagesError.className = 'error';
-    } else {
-        showError();
-    }
-});
+errorInputs.forEach(error => {
+    error.addEventListener('input', () => {
+        if (title.validity.valid) {
+            titleError.textContent = '';
+            titleError.className = 'error';
+        } else {
+            showError();
+        }
+    });
+})
    
 submitButton.addEventListener('click', (e) => {
     if (!title.validity.valid || !author.validity.valid || !pages.validity.valid) {
