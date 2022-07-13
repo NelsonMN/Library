@@ -6,14 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module" defer></script>
 </head>
 <body>
     <div class="header">
         <div class="title">Library</div>
-        <button data-modal-target= "#form" class="add">Add Book</button>
+        <nav>
+            <div class="signed-out">
+                <button class="add active" id="loggedIn">Log In</button>
+            </div>
+            <div class="signed-in">
+                <button class="add" id="loggedOut">Log out</button>
+            </div>
+        </nav>
+        
     </div>
     <div class="body">
+        <button data-modal-target= "#form" class="add">Add Book</button>
         <div class="book-cards">
         </div>
         <div class="form" id="form">
@@ -48,8 +57,19 @@
         </div>
         <div id="overlay"></div>
     </div>
-    <div class="footer"></div>
-    </body>
-
 </body>
+<script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-auth-compat.js"></script>
+<script>
+   const firebaseApp = firebase.initializeApp({
+    apiKey: "AIzaSyA7808J4Id5uNLR2NYS-MGhar773fiT87M",
+    authDomain: "library-537ad.firebaseapp.com",
+    projectId: "library-537ad",
+    storageBucket: "library-537ad.appspot.com",
+    messagingSenderId: "917718238040",
+    appId: "1:917718238040:web:081025078710d208b91b2d"
+   });
+</script>
+
 </html>

@@ -50,6 +50,21 @@ const library = new Library()
 
 // UI Functions:
 
+const loggedIn = document.getElementById('loggedIn')
+const loggedOut = document.getElementById('loggedOut')
+
+const changeNav = (user) => {
+    if (user) {
+        loggedIn.classList.add('active')
+        loggedOut.classList.remove('active')
+    } else {
+        loggedIn.classList.remove('active')
+        loggedOut.classList.add('active')
+    }
+}
+
+
+
 function getBookInfo() {
     const bookTitle = document.getElementById("title").value;
     const bookAuthor = document.getElementById("author").value;
@@ -206,3 +221,32 @@ function closeForm(form) {
     form.classList.remove("active");
     overlay.classList.remove("active");
 }
+
+// Firebase:
+
+// Authentication
+const auth = firebaseApp.auth();
+
+const logInButton = document.getElementById('loggedIn');
+const logOutButton = document.getElementById('loggedOut')
+
+// Sign In
+async function signIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
+}
+
+// Sign Out
+
+function signOut() {
+    signOut();
+}
+
+// Listen to Auth State changes:
+
+
+logInButton.onclick = signIn;
+logOutButton.onclick = signOut;
+
+// Database
+const db = firebaseApp.firestore();
