@@ -52,6 +52,7 @@ button {
     border: 1px solid black;
 }
 
+
 #loggedIn,
 #loggedOut {
   display: none;

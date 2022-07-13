@@ -52,18 +52,27 @@ const library = new Library()
 
 const loggedIn = document.getElementById('loggedIn')
 const loggedOut = document.getElementById('loggedOut')
+const nav = document.querySelector('.signed-out')
+
+const getUser = () => {}
 
 const changeNav = (user) => {
+    const heading = document.createElement("h1");
     if (user) {
-        loggedIn.classList.add('active')
-        loggedOut.classList.remove('active')
-    } else {
         loggedIn.classList.remove('active')
         loggedOut.classList.add('active')
+        console.log('Logged In')
+        console.log(`${auth.currentUser.displayName}`)
+        heading.textContent = auth.currentUser.displayName;
+        nav.append(heading);
+    } else {
+        heading.remove()
+        loggedIn.classList.add('active')
+        loggedOut.classList.remove('active')
+        console.log('Logged Out')
+        console.log(heading)   
     }
 }
-
-
 
 function getBookInfo() {
     const bookTitle = document.getElementById("title").value;
@@ -239,10 +248,14 @@ async function signIn() {
 // Sign Out
 
 function signOut() {
-    signOut();
+    auth.signOut();
 }
 
 // Listen to Auth State changes:
+
+auth.onAuthStateChanged(async (user) => {
+    changeNav(user)
+});
 
 
 logInButton.onclick = signIn;
