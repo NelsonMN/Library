@@ -52,25 +52,32 @@ const library = new Library()
 
 const loggedIn = document.getElementById('loggedIn')
 const loggedOut = document.getElementById('loggedOut')
-const nav = document.querySelector('.signed-out')
+const nav = document.querySelector('.signed-in')
 
 const getUser = () => {}
 
 const changeNav = (user) => {
-    const heading = document.createElement("h1");
+    const personalInfoDiv = document.createElement('div');
+    const nameTag = document.createElement('h1');
+    const imgTag = document.createElement('img');
+    personalInfoDiv.classList.add('personal-info-div');
+    imgTag.classList.add('img-icon')
+    personalInfoDiv.id = 'name';
+    personalInfoDiv.append(imgTag, nameTag);
+    
     if (user) {
         loggedIn.classList.remove('active')
         loggedOut.classList.add('active')
-        console.log('Logged In')
-        console.log(`${auth.currentUser.displayName}`)
-        heading.textContent = auth.currentUser.displayName;
-        nav.append(heading);
+        nameTag.textContent = auth.currentUser.displayName;
+        imgTag.src = auth.currentUser.photoURL;
+        nav.prepend(personalInfoDiv);
     } else {
-        heading.remove()
+        const personalInfo = document.querySelector('.personal-info-div');
+        if (personalInfo) {
+            personalInfo.remove()
+        }
         loggedIn.classList.add('active')
         loggedOut.classList.remove('active')
-        console.log('Logged Out')
-        console.log(heading)   
     }
 }
 
@@ -246,7 +253,6 @@ async function signIn() {
 }
 
 // Sign Out
-
 function signOut() {
     auth.signOut();
 }

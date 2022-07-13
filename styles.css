@@ -52,6 +52,30 @@ button {
     border: 1px solid black;
 }
 
+.signed-in {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: none;
+}
+
+h1 {
+    margin: 0;
+    font-weight: 200;
+    font-size: 1.25rem;
+}
+
+.personal-info-div {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.img-icon {
+    border-radius: 50%;
+    height: 40px;
+    pointer-events: none;
+}
 
 #loggedIn,
 #loggedOut {
