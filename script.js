@@ -36,7 +36,7 @@ class Library {
         for (let i = 0; i < this.books.length; i++) {
             if (book.title === this.books[i].title && book.read === "Read"){
                 book.read = "Not Read";
-                book.read = "Not Read";
+                this.books[i].read = "Not Read";
             } else if (book.title === this.books[i].title && book.read === "Not Read") {
                 book.read = "Read";
                 this.books[i].read = "Read";
@@ -54,15 +54,12 @@ const loggedIn = document.getElementById('loggedIn')
 const loggedOut = document.getElementById('loggedOut')
 const nav = document.querySelector('.signed-in')
 
-const getUser = () => {}
-
 const changeNav = (user) => {
     const personalInfoDiv = document.createElement('div');
     const nameTag = document.createElement('h1');
     const imgTag = document.createElement('img');
     personalInfoDiv.classList.add('personal-info-div');
     imgTag.classList.add('img-icon')
-    personalInfoDiv.id = 'name';
     personalInfoDiv.append(imgTag, nameTag);
     
     if (user) {
@@ -96,59 +93,77 @@ function getBookInfo() {
 };
 
 function addBookToLibrary(book) {
-    const bookCards = document.querySelector(".book-cards");
-    const card = document.createElement('div');
-    const cardTitle = document.createElement('div');
-    const cardAuthor = document.createElement('div');
-    const cardPages = document.createElement('div');
-    const readStatus = document.createElement('div');
-    const readButton = document.createElement('button');
-    const deleteButton = document.createElement('button');
-    const read = document.getElementById("read").checked;
+    if (auth.currentUser) {
+        const bookCards = document.querySelector(".book-cards");
+        const card = document.createElement('div');
+        const cardTitle = document.createElement('div');
+        const cardAuthor = document.createElement('div');
+        const cardPages = document.createElement('div');
+        const readStatus = document.createElement('div');
+        const readButton = document.createElement('button');
+        const deleteButton = document.createElement('button');
+        const read = document.getElementById("read").checked;
 
-    card.classList.add('card');
-    cardTitle.classList.add('card-title');
-    cardAuthor.classList.add('card-author');
-    cardPages.classList.add('card-pages');
-    readStatus.classList.add('card-read');
-    readButton.classList.add('card-button');
-    deleteButton.classList.add('card-delete');
+        card.classList.add('card');
+        cardTitle.classList.add('card-title');
+        cardAuthor.classList.add('card-author');
+        cardPages.classList.add('card-pages');
+        readStatus.classList.add('card-read');
+        readButton.classList.add('card-button');
+        deleteButton.classList.add('card-delete');
 
-    readButton.addEventListener("click", toggleReadStatus);
-    deleteButton.addEventListener("click", deleteCard);
+        readButton.addEventListener("click", toggleReadStatus);
+        deleteButton.addEventListener("click", deleteCard);
 
-    cardTitle.textContent = `"${book.title}"`;
-    cardAuthor.textContent = `By: ${book.author}`;
-    cardPages.textContent = `${book.pageCount} pages`;
-    readButton.textContent = "Read";
-    deleteButton.textContent = "Delete";
-    if (read) {
-        readStatus.textContent = "Read";
+        cardTitle.textContent = `"${book.title}"`;
+        cardAuthor.textContent = `By: ${book.author}`;
+        cardPages.textContent = `${book.pageCount} pages`;
+        readButton.textContent = "Read";
+        deleteButton.textContent = "Delete";
+        if (read) {
+            readStatus.textContent = "Read";
+        } else {
+            readStatus.textContent = "Not Read";
+        };
+
+        library.addBook(book)
+        addBookToDatabase(book)
+        card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
+        bookCards.appendChild(card)
     } else {
-        readStatus.textContent = "Not Read";
-    };
-
-    library.addBook(book)
-    card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
-    bookCards.appendChild(card)
+        alert('Please sign in with Google')
+    }
+    
 }
 
 function toggleReadStatus(e) {
-    const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    library.toggleRead(library.findBook(title));
-    const readStatus = e.target.previousSibling;
-    if (readStatus.textContent == "Not Read") {
-        readStatus.textContent = "Read";
-    } else if (readStatus.textContent == "Read") {
-        readStatus.textContent = "Not Read";
+    if (auth.currentUser) {
+        const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
+        const book = library.findBook(title)
+        library.toggleRead(book);
+        const readStatus = e.target.previousSibling;
+        if (readStatus.textContent == "Not Read") {
+            readStatus.textContent = "Read";
+        } else if (readStatus.textContent == "Read") {
+            readStatus.textContent = "Not Read";
+        }
+        toggleReadFromDatabase(book)
+    } else {
+        alert('Please sign in with Google')
     }
 }
 
 function deleteCard(e) {
-    const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
-    library.removeBook(library.findBook(title));
-    const card = e.target.parentNode;
-    card.remove();
+    if (auth.currentUser) {
+        const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
+        const book = library.findBook(title)
+        library.removeBook(book);
+        removeBookFromDatabase(book)
+        const card = e.target.parentNode;
+        card.remove();
+    } else {
+        alert('Please sign in with Google')
+    }
 }
 
 
@@ -163,7 +178,12 @@ const overlay = document.getElementById("overlay");
 addBookButtons.forEach(button => {
     button.addEventListener("click", () => {
         const form = document.querySelector(button.dataset.modalTarget);
-        openForm(form);
+        if (auth.currentUser) {
+            openForm(form);
+        } else {
+            alert('Please sign in with Google')
+        }
+        
     })
 }) 
 
@@ -208,7 +228,6 @@ submitButton.addEventListener('click', (e) => {
         const formCard = document.getElementById("form-card");
         const form = document.querySelector(".form");
         formCard.reset();
-        console.log(form)
         closeForm(form)
     }
 });
@@ -237,6 +256,7 @@ function closeForm(form) {
     form.classList.remove("active");
     overlay.classList.remove("active");
 }
+
 
 // Firebase:
 
@@ -267,5 +287,51 @@ auth.onAuthStateChanged(async (user) => {
 logInButton.onclick = signIn;
 logOutButton.onclick = signOut;
 
+
+
 // Database
+
 const db = firebaseApp.firestore();
+
+const bookCollection = db.collection('books')
+
+const addBookToDatabase = (book) => {
+    bookCollection.add(createStorageObject(book))
+}
+
+const removeBookFromDatabase = async (book) => {
+    bookCollection
+        .doc(await getBookIdFromStorage(book.title))
+        .delete()
+}
+
+const toggleReadFromDatabase = async (book) => {
+    if (book.read === 'Not Read') {
+        bookCollection
+        .doc(await getBookIdFromStorage(book.title))
+        .update({read: 'Read'})
+    } else if (book.read === 'Read') {
+        bookCollection
+        .doc(await getBookIdFromStorage(book.title))
+        .update({read: 'Not Read'})
+    }
+}
+
+const getBookIdFromStorage = async (title) => {
+    const snapshot = await bookCollection
+        .where('ownerId', '==', auth.currentUser.uid)
+        .where('title', '==', title)
+        .get()
+    const id = snapshot.docs.map((doc) => doc.id)[0]
+    return id
+}
+
+const createStorageObject = (book) => {
+    return {
+        ownerId: auth.currentUser.uid,
+        title: book.title,
+        author: book.author,
+        pageCount: book.pageCount,
+        read: book.read
+    }
+}
