@@ -34,12 +34,12 @@ class Library {
 
     toggleRead(book) {
         for (let i = 0; i < this.books.length; i++) {
-            if (book.title === this.books[i].title && book.read === "Read"){
-                book.read = "Not Read";
-                this.books[i].read = "Not Read";
-            } else if (book.title === this.books[i].title && book.read === "Not Read") {
-                book.read = "Read";
-                this.books[i].read = "Read";
+            if (book.title === this.books[i].title && book.read){
+                book.read = false;
+                this.books[i].read = false;
+            } else if (book.title === this.books[i].title && !book.read) {
+                book.read = true;
+                this.books[i].read = true;
             }
         }
     }
@@ -83,13 +83,7 @@ function getBookInfo() {
     const bookAuthor = document.getElementById("author").value;
     const bookPageCount = document.getElementById("pages").value;
     const read = document.getElementById("read").checked;
-    let readStatus;
-    if (read) {
-        readStatus = "Read";
-    } else {
-        readStatus = "Not Read";
-    }
-    return new Book(bookTitle, bookAuthor, bookPageCount, readStatus)
+    return new Book(bookTitle, bookAuthor, bookPageCount, read)
 };
 
 function addBookToLibrary(book) {
@@ -125,7 +119,6 @@ function addBookToLibrary(book) {
         } else {
             readStatus.textContent = "Not Read";
         };
-
         library.addBook(book)
         addBookToDatabase(book)
         card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
@@ -144,8 +137,12 @@ function toggleReadStatus(e) {
         const readStatus = e.target.previousSibling;
         if (readStatus.textContent == "Not Read") {
             readStatus.textContent = "Read";
+            book.read = true
+            console.log(book)
         } else if (readStatus.textContent == "Read") {
             readStatus.textContent = "Not Read";
+            book.read = false
+            console.log(book)
         }
         toggleReadFromDatabase(book)
     } else {
@@ -306,16 +303,11 @@ const removeBookFromDatabase = async (book) => {
 }
 
 const toggleReadFromDatabase = async (book) => {
-    if (book.read === 'Not Read') {
-        bookCollection
-        .doc(await getBookIdFromStorage(book.title))
-        .update({read: 'Read'})
-    } else if (book.read === 'Read') {
-        bookCollection
-        .doc(await getBookIdFromStorage(book.title))
-        .update({read: 'Not Read'})
-    }
+    bookCollection
+    .doc(await getBookIdFromStorage(book.title))
+    .update({ read: book.read })
 }
+
 
 const getBookIdFromStorage = async (title) => {
     const snapshot = await bookCollection
