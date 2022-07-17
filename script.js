@@ -33,16 +33,14 @@ class Library {
     }
 
     toggleRead(book) {
-        for (let i = 0; i < this.books.length; i++) {
-            if (book.title === this.books[i].title && book.read){
-                book.read = false;
-                this.books[i].read = false;
-            } else if (book.title === this.books[i].title && !book.read) {
-                book.read = true;
-                this.books[i].read = true;
-            }
+        const bookToUpdate = this.findBook(book.title)
+        if (bookToUpdate.read) {
+            bookToUpdate.read = false
+        } else {
+            bookToUpdate.read = true
         }
     }
+        
 }
 
 const library = new Library()
@@ -86,7 +84,7 @@ function getBookInfo() {
     return new Book(bookTitle, bookAuthor, bookPageCount, read)
 };
 
-function addBookToLibrary(book) {
+function addBookCard(book) {
     if (auth.currentUser) {
         const bookCards = document.querySelector(".book-cards");
         const card = document.createElement('div');
@@ -119,32 +117,26 @@ function addBookToLibrary(book) {
         } else {
             readStatus.textContent = "Not Read";
         };
-        library.addBook(book)
-        addBookToDatabase(book)
         card.append(cardTitle, cardAuthor, cardPages, cardPages, readStatus, readButton, deleteButton)
         bookCards.appendChild(card)
     } else {
         alert('Please sign in with Google')
     }
-    
 }
 
 function toggleReadStatus(e) {
+    e.preventDefault()
     if (auth.currentUser) {
         const title = e.target.parentNode.firstChild.textContent.replaceAll('"', '');
         const book = library.findBook(title)
         library.toggleRead(book);
         const readStatus = e.target.previousSibling;
-        if (readStatus.textContent == "Not Read") {
-            readStatus.textContent = "Read";
-            book.read = true
-            console.log(book)
-        } else if (readStatus.textContent == "Read") {
-            readStatus.textContent = "Not Read";
-            book.read = false
-            console.log(book)
-        }
         toggleReadFromDatabase(book)
+        if (!book.read) {
+            readStatus.textContent = "Read";
+        } else if (book.read) {
+            readStatus.textContent = "Not Read";
+        }
     } else {
         alert('Please sign in with Google')
     }
@@ -214,14 +206,15 @@ errorInputs.forEach(error => {
 })
    
 submitButton.addEventListener('click', (e) => {
+    e.preventDefault()
     if (!title.validity.valid || !author.validity.valid || !pages.validity.valid) {
         showError();
-        e.preventDefault()
         e.stopImmediatePropagation()
-    } else {
-        e.preventDefault()
+    } else if (auth.currentUser) {
         const newBook = getBookInfo();
-        addBookToLibrary(newBook);
+        library.addBook(newBook);
+        addBookCard(newBook);
+        addBookToDatabase(newBook);
         const formCard = document.getElementById("form-card");
         const form = document.querySelector(".form");
         formCard.reset();
@@ -254,11 +247,32 @@ function closeForm(form) {
     overlay.classList.remove("active");
 }
 
+const updateCards = () => {
+    resetCards()
+    for (let book of library.books) {
+        addBookCard(book)
+    }
+  }
+
+const resetCards = () => {
+    const bookCards = document.querySelector('.book-cards')
+    bookCards.textContent = '';
+}
 
 // Firebase:
 
 // Authentication
 const auth = firebaseApp.auth();
+
+auth.onAuthStateChanged( async (user) => {
+    if (user) {
+        listener()
+    } else {
+        if (unsubscribe) unsubscribe()
+        updateCards()
+    }
+    changeNav(user)
+})
 
 const logInButton = document.getElementById('loggedIn');
 const logOutButton = document.getElementById('loggedOut')
@@ -274,23 +288,26 @@ function signOut() {
     auth.signOut();
 }
 
-// Listen to Auth State changes:
-
-auth.onAuthStateChanged(async (user) => {
-    changeNav(user)
-});
-
-
 logInButton.onclick = signIn;
 logOutButton.onclick = signOut;
-
 
 
 // Database
 
 const db = firebaseApp.firestore();
+const bookCollection = db.collection('books');
+let unsubscribe;
 
-const bookCollection = db.collection('books')
+const listener = () => {
+    unsubscribe = db
+      .collection('books')
+      .where('ownerId', '==', auth.currentUser.uid)
+      .orderBy('createdAt')
+      .onSnapshot((snapshot) => {
+        library.books = docsToBooks(snapshot.docs)
+        updateCards()
+      })
+  }
 
 const addBookToDatabase = (book) => {
     bookCollection.add(createStorageObject(book))
@@ -324,6 +341,18 @@ const createStorageObject = (book) => {
         title: book.title,
         author: book.author,
         pageCount: book.pageCount,
-        read: book.read
+        read: book.read,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }
 }
+
+const docsToBooks = (docs) => {
+    return docs.map((doc) => {
+      return new Book(
+        doc.data().title,
+        doc.data().author,
+        doc.data().pageCount,
+        doc.data().read
+      )
+    })
+  }
